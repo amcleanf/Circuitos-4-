@@ -1,0 +1,38 @@
+/*
+ * tarea2.c
+ *
+ * Created: 06/08/2020 9:15:25 p. m.
+ * Author : aaron
+ */ 
+
+# define  F_CPU  1000000UL
+# include <avr/io.h>
+# include <util/delay.h>
+
+
+int  main(void)
+{
+	DDRB |=(1<<PORTB4)|(1<<PORTB6);   // Establecer el registro de direcci�n de datos para la salida
+	DDRA &=~(1<<PORTA7);	// Establecer el registro de direcci�n de datos para que el interruptor ingrese
+	
+	PORTB=(0<<PORTB4)|(0<<PORTB6); // Estado de salida BAJA (sumidero)
+	PORTA=(1<<PORTA7);	// Habilita la resistencia pull-up para el interruptor
+	
+	while ( 1 )
+	{
+		if (PINA & (1<<PORTA7))
+		{
+			PORTB |=(1<<PORTB4);
+			PORTB &=~(1<<PORTB6);
+			_delay_ms (100);
+		}
+		
+		else
+		{
+			PORTB&=~ (1<<PORTB4);
+			PORTB|=(1<<PORTB6);
+			_delay_ms ( 100 );
+		}
+
+	}
+}
